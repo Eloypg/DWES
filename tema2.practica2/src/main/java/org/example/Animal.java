@@ -19,8 +19,9 @@ import java.time.LocalDate;
 
 @JacksonXmlRootElement(localName = "animal")
 public class Animal {
+
     enum AnimalSex {
-        MALE, FEMALE
+        Macho, Hembra
     }
 
     private int id;

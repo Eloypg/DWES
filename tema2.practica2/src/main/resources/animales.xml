@@ -18,14 +18,5 @@
       <fechaIngreso>2024-01-15</fechaIngreso>
       <adoptado>false</adoptado>
     </animal>
-    <animal>
-      <id>12</id>
-      <nombre>dscds</nombre>
-      <especie>cdscd</especie>
-      <edad>1</edad>
-      <sexo>Macho</sexo>
-      <fechaIngreso>2002-12-31</fechaIngreso>
-      <adoptado>true</adoptado>
-    </animal>
   </animales>
 </protectoraDeAnimales>

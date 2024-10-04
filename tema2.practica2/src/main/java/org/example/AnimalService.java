@@ -1,7 +1,6 @@
 package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -55,8 +54,7 @@ public class AnimalService {
         System.out.print("· EDAD: ");
         int age = in.nextInt();
 
-        //Animal.AnimalSex animalSex = sexSelector(in);
-        String animalSex = sexSelector(in);
+        Animal.AnimalSex animalSex = sexSelector(in);
 
         System.out.print("· FECHA DE INGRESO (yyyy-MM-dd): ");
         String entryDateString = in.next();
@@ -83,7 +81,7 @@ public class AnimalService {
         } while (option != 1 && option != 2);
         return isAdopted;
     }
-    public static String sexSelector(Scanner in){
+    public static Animal.AnimalSex sexSelector(Scanner in){
         Animal.AnimalSex animalSex = null;
         int option;
         do {
@@ -93,31 +91,13 @@ public class AnimalService {
                     "Elige una opción: ");
             option = in.nextInt();
             switch (option) {
-                case 1 -> animalSex = Animal.AnimalSex.MALE;
-                case 2 -> animalSex = Animal.AnimalSex.FEMALE;
-                default -> System.out.println("Selecciona una opción válida.");
-            }
-        } while (option != 1 && option != 2);
-        return new ObjectMapper().writeValueAsString(animalSex);;
-    }
-    /*public static String sexSelector(Scanner in){
-        String animalSex = "";
-        int option;
-        do {
-            System.out.println("\n· SEXO: ");
-            System.out.print("1) Macho.\n" +
-                    "2) Hembra.\n" +
-                    "Elige una opción: ");
-            option = in.nextInt();
-            switch (option) {
-                case 1 -> animalSex = "Macho";
-                case 2 -> animalSex = "Hembra";
+                case 1 -> animalSex = Animal.AnimalSex.Macho;
+                case 2 -> animalSex = Animal.AnimalSex.Hembra;
                 default -> System.out.println("Selecciona una opción válida.");
             }
         } while (option != 1 && option != 2);
         return animalSex;
     }
-*/
     public static Animal findAnimal(Protectora animalList, Scanner in) {
         Animal animal = new Animal();
         System.out.println("\nDime el nombre de el animal a buscar: ");
