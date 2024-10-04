@@ -1,79 +1,50 @@
 package org.example;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@JacksonXmlRootElement(localName = "protectoraDeAnimales")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+
+@JacksonXmlRootElement(localName = "animal")
 public class Animal {
     enum AnimalSex {
         MALE, FEMALE
     }
-    @JacksonXmlElementWrapper(localName = "animales")
-    @JacksonXmlProperty(localName = "animal")
+
     private int id;
+
+    @JacksonXmlProperty(localName = "nombre")
     private String name;
+
+    @JacksonXmlProperty(localName = "especie")
     private String species;
+
+    @JacksonXmlProperty(localName = "edad")
     private int age;
+
+    @JacksonXmlProperty(localName = "sexo")
     private AnimalSex sex;
+
+    @JacksonXmlProperty(localName = "fechaIngreso")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate entryDate;
+
+    @JacksonXmlProperty(localName = "adoptado")
     private boolean adopted;
-
-    public Animal(int id, String name, String species, int age, AnimalSex sex, LocalDate entryDate, boolean adopted) {
-        this.id = id;
-        this.name = name;
-        this.species = species;
-        this.age = age;
-        this.sex = sex;
-        this.entryDate = entryDate;
-        this.adopted = adopted;
-    }
-    public Animal(){}
-
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getSpecies() {
-        return species;
-    }
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
-    }
-    public AnimalSex getSex() {
-        return sex;
-    }
-    public void setSex(AnimalSex sex) {
-        this.sex = sex;
-    }
-    public LocalDate getEntryDate() {
-        return entryDate;
-    }
-    public void setEntryDate(LocalDate entryDate) {
-        this.entryDate = entryDate;
-    }
-    public boolean isAdopted() {
-        return adopted;
-    }
-    public void setAdopted(boolean adopted) {
-        this.adopted = adopted;
-    }
 
     @Override
     public String toString() {

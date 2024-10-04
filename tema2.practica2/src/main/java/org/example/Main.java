@@ -24,8 +24,8 @@ public class Main extends AnimalService {
     public static void menu(){
         Scanner in = new Scanner(System.in);
         int option;
-        List<Animal> animalList = new ArrayList<>();
-        Path animalXml = Paths.get("C:\\Users\\pardo\\IdeaProjects\\DWES\\tema2.practica2\\src\\main\\resources\\animales.xml");
+        Protectora animalList = null;
+        Path animalXml = Paths.get("tema2.practica2/src/main/resources/animales.xml");
         do {
             showMenu();
             option = in.nextInt();
@@ -34,7 +34,7 @@ public class Main extends AnimalService {
                     animalList = readXmlToList(animalXml);
                     break;
                 case 2:
-                    writeListToXml(animalList);
+                    writeListToXml(animalList, animalXml);
                     break;
                 case 3:
                     addAnimal(animalList, in);

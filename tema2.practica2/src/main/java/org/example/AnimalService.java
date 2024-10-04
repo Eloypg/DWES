@@ -1,11 +1,14 @@
 package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.Scanner;
 
 public class AnimalService {
 
-    public static List<Animal> readXmlToList(Path path) {
+    public static Protectora readXmlToList(Path path) {
         try {
             XmlMapper xmlMapper = new XmlMapper();
             return xmlMapper.readValue(path.toFile(), new TypeReference<>() { });
@@ -22,15 +25,18 @@ public class AnimalService {
             throw new RuntimeException(e);
         }
     }
-    public static String writeListToXml(List<Animal> animalList) {
+    public static Protectora writeListToXml(Protectora animalList, Path path) {
         try {
             XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.enable(SerializationFeature.INDENT_OUTPUT); //línea opcional, pero indenta el xml cunando lo escribimos
-            return xmlMapper.writeValueAsString(animalList);
+            xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            // Serializar la lista de personas a formato XML
+            xmlMapper.writeValue(path.toFile(), animalList);
+
         } catch (IOException e) {
             System.out.println("\nNO SE HA PODIDO ESCRIBIR EN EL XML (writeListToXml)\n");
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return animalList;
     }
 
     public static Animal createAnimal(Scanner in){
@@ -40,18 +46,19 @@ public class AnimalService {
         System.out.print("· ID: ");
         int id = in.nextInt();
 
-        System.out.print("\n· NOMBRE: ");
+        System.out.print("· NOMBRE: ");
         String name = in.next();
 
-        System.out.print("\n· ESPECIE: ");
+        System.out.print("· ESPECIE: ");
         String species = in.next();
 
-        System.out.print("\n· EDAD: ");
+        System.out.print("· EDAD: ");
         int age = in.nextInt();
 
-        Animal.AnimalSex animalSex = sexSelector(in);
+        //Animal.AnimalSex animalSex = sexSelector(in);
+        String animalSex = sexSelector(in);
 
-        System.out.print("\n· FECHA DE INGRESO (yyyy-MM-dd): ");
+        System.out.print("· FECHA DE INGRESO (yyyy-MM-dd): ");
         String entryDateString = in.next();
         LocalDate entryDate = LocalDate.parse(entryDateString, formatter);
 
@@ -76,7 +83,7 @@ public class AnimalService {
         } while (option != 1 && option != 2);
         return isAdopted;
     }
-    public static Animal.AnimalSex sexSelector(Scanner in){
+    public static String sexSelector(Scanner in){
         Animal.AnimalSex animalSex = null;
         int option;
         do {
@@ -91,32 +98,49 @@ public class AnimalService {
                 default -> System.out.println("Selecciona una opción válida.");
             }
         } while (option != 1 && option != 2);
+        return new ObjectMapper().writeValueAsString(animalSex);;
+    }
+    /*public static String sexSelector(Scanner in){
+        String animalSex = "";
+        int option;
+        do {
+            System.out.println("\n· SEXO: ");
+            System.out.print("1) Macho.\n" +
+                    "2) Hembra.\n" +
+                    "Elige una opción: ");
+            option = in.nextInt();
+            switch (option) {
+                case 1 -> animalSex = "Macho";
+                case 2 -> animalSex = "Hembra";
+                default -> System.out.println("Selecciona una opción válida.");
+            }
+        } while (option != 1 && option != 2);
         return animalSex;
     }
-
-    public static Animal findAnimal(List<Animal> animalList, Scanner in) {
+*/
+    public static Animal findAnimal(Protectora animalList, Scanner in) {
         Animal animal = new Animal();
         System.out.println("\nDime el nombre de el animal a buscar: ");
         String name = in.next();
-        for (Animal a : animalList) {
+        for (Animal a : animalList.getAnimalList()) {
             if (a.getName().equalsIgnoreCase(name)) animal = a;
         }
         return animal;
     }
 
-    public static void addAnimal(List<Animal> animalList, Scanner in){
+    public static void addAnimal(Protectora animalList, Scanner in){
         Animal animal = createAnimal(in);
-        animalList.add(animal);
+        animalList.getAnimalList().add(animal);
     }
-    public static void removeAnimal(List<Animal> animalList, Scanner in){
+    public static void removeAnimal(Protectora animalList, Scanner in){
         Animal animal = findAnimal(animalList, in);
-        animalList.remove(animal);
+        animalList.getAnimalList().remove(animal);
     }
-    public static String consultAnimal(List<Animal> animalList, Scanner in){
+    public static String consultAnimal(Protectora animalList, Scanner in){
         Animal animal = findAnimal(animalList, in);
         return animal.toString();
     }
-    public static void showAllAnimals(List<Animal> animalList){
-        animalList.forEach(a -> System.out.println(a.toString()));
+    public static void showAllAnimals(Protectora animalList){
+        animalList.getAnimalList().forEach(a -> System.out.println(a.toString()));
     }
 }
