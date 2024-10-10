@@ -2,8 +2,6 @@ package org.example;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main extends AnimalService {
@@ -31,10 +29,10 @@ public class Main extends AnimalService {
             option = in.nextInt();
             switch (option) {
                 case 1:
-                    animalList = readXmlToList(animalXml);
+                    animalList = readJSONToList(animalXml);
                     break;
                 case 2:
-                    writeListToXml(animalList, animalXml);
+                    writeListToJSON(animalList, animalXml);
                     break;
                 case 3:
                     addAnimal(animalList, in);

@@ -1,36 +1,33 @@
 package org.example;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Scanner;
 
 public class AnimalService {
 
-    public static Protectora readXmlToList(Path path) {
+    public static Protectora readJSONToList(Path path) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        //objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        Protectora protectora;
         try {
-            XmlMapper xmlMapper = new XmlMapper();
-            return xmlMapper.readValue(path.toFile(), new TypeReference<>() { });
+            protectora = objectMapper.readValue(path.toFile(), Protectora.class);
         } catch (IOException e) {
             System.out.println("\nNO SE HA PODIDO LEER EL XML (readXmlToList)\n");
             throw new RuntimeException(e);
         }
+        return protectora;
     }
-    public static Protectora writeListToXml(Protectora animalList, Path path) {
+    public static Protectora writeListToJSON(Protectora animalList, Path path) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            // Serializar la lista de personas a formato XML
-            xmlMapper.writeValue(path.toFile(), animalList);
-
+            objectMapper.writeValue(path.toFile(), animalList);
         } catch (IOException e) {
             System.out.println("\nNO SE HA PODIDO ESCRIBIR EN EL XML (writeListToXml)\n");
             e.printStackTrace();
@@ -103,7 +100,7 @@ public class AnimalService {
         System.out.println("\nDime el nombre de el animal a buscar: ");
         String name = in.next();
         for (Animal a : animalList.getAnimalList()) {
-            if (a.getName().equalsIgnoreCase(name)) animal = a;
+            if (a.getNombre().equalsIgnoreCase(name)) animal = a;
         }
         return animal;
     }
