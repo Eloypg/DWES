@@ -11,4 +11,12 @@ import lombok.NoArgsConstructor;
 public class Pokemon {
     private String name;
     private String url;
+
+    @Override
+    public String toString() {
+        return "Pokemon { " +
+                "NOMBRE: " + name + " | " +
+                "URL: " + url +
+                " }";
+    }
 }
