@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Service {
@@ -21,15 +22,25 @@ public class Service {
         }
         return pokemons;
     }
-    /*public static List<String> getPokemonData(String url) {
+    public static List<Ability> getPokemoAbilities(Pokemon pokemon) {
         ObjectMapper om = new ObjectMapper().registerModule(new JavaTimeModule());
-        List<String> pokemonData;
+        List<Ability> pokemonAbilities = new ArrayList<>();
         try {
-            JsonNode rootNode = om.readTree(new URL(url));
-            pokemonData = om.readValue(rootNode.get("results").traverse(), new TypeReference<>() {});
+            JsonNode rootNode = om.readTree(new URL(pokemon.getUrl()));
+            JsonNode abilitiesArray = om.readValue(rootNode.get("abilities").traverse(), new TypeReference<>() {});
+            if (abilitiesArray.isArray()) {
+                for (JsonNode abilityNode : abilitiesArray) {
+                    JsonNode abilityObject = abilityNode.get("ability");
+                    String name = abilityObject.get("name").asText();
+                    String url = abilityObject.get("url").asText();
+
+                    Ability ability = new Ability(name, url);
+                    pokemonAbilities.add(ability);
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return pokemonData;
-    }*/
+        return pokemonAbilities;
+    }
 }

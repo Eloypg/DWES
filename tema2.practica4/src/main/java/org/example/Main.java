@@ -7,7 +7,7 @@ public class Main extends Service {
         List<Pokemon> pokemons = readAPI();
         pokemons.forEach(System.out::println);
         for (Pokemon p : pokemons) {
-            System.out.println(getPokemonData(p.getUrl()));
+            System.out.println(getPokemoAbilities(p));
         }
     }
 }
