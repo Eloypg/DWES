@@ -11,16 +11,12 @@ import lombok.NoArgsConstructor;
 public class Ability {
     private String name;
     private String url;
-    //private boolean is_hidden;
-   // private int slot;
 
     @Override
     public String toString() {
-        return "Habilidad { " +
+        return "    Habilidad { " +
                 "NOMBRE: " + name + " | " +
                 "URL: " + url + " | " +
-               // "ES OCULTA? " + is_hidden + " | " +
-              //  "SLOT: " + slot +
                 " }";
     }
 }
