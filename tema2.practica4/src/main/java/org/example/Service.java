@@ -31,12 +31,7 @@ public class Service {
             JsonNode abilitiesArray = om.readValue(rootNode.get("abilities").traverse(), new TypeReference<>() {});
             if (abilitiesArray.isArray()) {
                 for (JsonNode abilityNode : abilitiesArray) {
-                    JsonNode abilityObject = abilityNode.get("ability");
-                    String name = abilityObject.get("name").asText();
-                    String url = abilityObject.get("url").asText();
-
-                    Ability ability = new Ability(name, url);
-                    pokemonAbilities.add(ability);
+                    pokemonAbilities.add(om.readValue(abilityNode.get("ability").traverse(), Ability.class));
                 }
             }
         } catch (IOException e) {
