@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,4 +18,6 @@ public class House {
     private String founder;
     private String hoseBoss;
     private String ghost;
+
+    //private List<Student> studentList;
 }
