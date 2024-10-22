@@ -3,6 +3,7 @@ package org.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class Main {
@@ -12,7 +13,13 @@ public class Main {
         String masterPassword = "12345678";
 
         List<Student> list = HogwartsService.getStudents(url, masterUser, masterPassword);
+        System.out.println("        - ESTUDIANTES -");
         list.forEach(System.out::println);
+        List<House> listHouse = HogwartsService.getHouses(url, masterUser, masterPassword);
+        System.out.println("        - CASAS -");
+        listHouse.forEach(System.out::println);
+
+        HogwartsService.showStudentGroupByHouse(listHouse, list);
 
         try (Connection conection = DriverManager.getConnection(url, masterUser, masterPassword)) {
             System.out.println("TE HAS CONECTADO A LA BASE DE DATOS ERES UN FIERA TIO");

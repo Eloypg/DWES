@@ -16,8 +16,16 @@ public class House {
     private int id;
     private String name;
     private String founder;
-    private String hoseBoss;
+    private String houseBoss;
     private String ghost;
 
     //private List<Student> studentList;
+    @Override
+    public String toString() {
+        return  "ID: " + id + " | " +
+                "NOMBRE: " + name + " | " +
+                "FUNDADOR: " + founder + " | " +
+                "JEFE DE LA CASA: " + houseBoss + " | " +
+                "FANTASMA: " + ghost;
+    }
 }

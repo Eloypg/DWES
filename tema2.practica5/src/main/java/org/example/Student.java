@@ -24,12 +24,11 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Estudiante { " +
-                "ID: " + id + " | " +
+        return  "ID: " + id + " | " +
                 "NOMBRE: " + name + " | " +
-                "APELLIDO: '" + surname + " | " +
+                "APELLIDO: " + surname + " | " +
                 "ID CASA: " + id_house + " | " +
                 "AÑO DEL CURSO: " + courseYear + " | " +
-                "FECHA NACIMIENTO: " + birthDate + " }";
+                "FECHA NACIMIENTO: " + birthDate;
     }
 }
