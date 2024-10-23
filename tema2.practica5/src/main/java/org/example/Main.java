@@ -18,7 +18,7 @@ public class Main {
         //HogwartsService.studentsAmountByHouse(studentList, houseList);
         houseList.forEach(System.out::println);
         try (Connection conection = DriverManager.getConnection(url, masterUser, masterPassword)) {
-            System.out.println("TE HAS CONECTADO A LA BASE DE DATOS ERES UN FIERA TIO");
+            System.out.println("TE HAS CONECTADO A LA BASE DE DATOS");
         } catch (SQLException ex) {
             System.out.println("\nNO SE HA PODIDO CONECTAR A LA BASE DE DATOS");
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
