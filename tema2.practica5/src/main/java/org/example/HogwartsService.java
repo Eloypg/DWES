@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class HogwartsService {
 
@@ -98,8 +99,33 @@ public class HogwartsService {
         }
         return subjectList;
     }
+    public static List<StudentSubject> getStudentSubject(String url, String masterName, String masterPasswd){
+        List<StudentSubject> studentSubject = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
+            String SQLquery = "SELECT id_estudiante, id_asignatura, calificacion FROM Estudiante_Asignatura";
+            PreparedStatement query = connection.prepareStatement(SQLquery);
+            ResultSet result = query.executeQuery();
+            while (result.next()) {
+                StudentSubject relation= new StudentSubject(
+                        result.getInt("id_estudiante"),
+                        result.getInt("id_asignatura"),
+                        result.getFloat("calificacion"));
+                studentSubject.add(relation);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR EN LA SIGUIENTE FUNCIÓN: getStudentSubject()");
+            System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+        }
+        return studentSubject;
+    }
 
-
+    public static Student findStudent(String name, List<Student> studentList){
+        Student student = new Student();
+        for (Student s : studentList){
+            if (s.getName().equalsIgnoreCase(name)) student = s;
+        }
+        return student;
+    }
 
     public static void showStudentGroupByHouse(List<House> houseList, List<Student> studentList){
         for (House h : houseList){
@@ -111,4 +137,108 @@ public class HogwartsService {
             }
         }
     }
+    public static List<Subject> mandatorySubjects(List<Subject> subjects){
+        List<Subject> mandatorySubjects = new ArrayList<>();
+        for (Subject s : subjects) {
+            if (s.isMandatory()) mandatorySubjects.add(s);
+        }
+        if (mandatorySubjects.isEmpty()) System.out.println("\nNo hay ninguna asignatura obligatoria, el listado se devolvera vacío.");
+        return mandatorySubjects;
+    }
+    public static Pet specificStudentPet(Student student, List<Pet> petList){
+        Pet pet = new Pet();
+        for (Pet p : petList){
+            if (p.getId_student() == student.getId()) pet = p;
+        }
+        return pet;
+    }
+    public static List<Student> studentsWithoutPet(List<Student> studentList, List<Pet> petList){
+        List<Student> studentsWithoutPet = new ArrayList<>();
+        for (Student s : studentList){
+            int counter = 0;
+            for (Pet p : petList) {
+                if (p.getId_student() == s.getId()) counter++;
+            }
+            if (counter == 0) studentsWithoutPet.add(s);
+        }
+        return studentsWithoutPet;
+    }
+    //NO FUNCIONA
+    public static float averageGrades(Student student, List<StudentSubject> relations) {
+        float totalGrade = 0;
+        int subjectCounter = 0;
+        for (StudentSubject r : relations) {
+            if (r.getId_student() == student.getId()){
+                totalGrade += r.getCalification();
+                subjectCounter++;
+            }
+        }
+        if (subjectCounter == 0) {
+            return 0;
+        }
+        return (totalGrade / subjectCounter);
+    }
+    public static void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
+        for (House h : houseList){
+            int counter = 0;
+            for (Student s : studentList){
+                if (s.getId_house() == h.getId()) counter++;
+            }
+            System.out.println("    - " + h.getName().toUpperCase() + ": " + counter);
+        }
+    }
+    //estudiantes matriculados en una asignatura especifica
+    public static List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<Subject> subjectList, List<StudentSubject> relation){
+
+    }
+
+    public static Student createStudent(Scanner in, List<Student> studentList){
+        int id = studentList.size();
+        System.out.print("Nombre: ");
+        String name = in.next();
+        System.out.print("Apellido: ");
+        String surname = in.next();
+        System.out.print("ID de la casa: ");
+        int houseID = in.nextInt();
+        System.out.print("Curso (año): ");
+        int year = in.nextInt();
+        System.out.print("Fecha nacimiento (yyyy-MM-dd): ");
+        LocalDate birthDate = parseStringToLocalDate(in.next());
+
+        return new Student(id, name, surname, houseID, year, birthDate);
+    }
+    public static void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
+        try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
+            String SQLquery = "INSERT INTO Estudiante (nombre, apellido, id_casa, año_curso, fecha_nacimiento) VALUES" +
+                    "(?, ?, ?, ?, ?)";
+            PreparedStatement query = connection.prepareStatement(SQLquery);
+            System.out.println("    - Dime los datos del estudiante a insertar: ");
+            Student student = createStudent(in, studentList);
+            query.setString(1, student.getName());
+            query.setString(2, student.getSurname());
+            query.setInt(3, student.getId_house());
+            query.setInt(4, student.getCourseYear());
+            query.setDate(5, Date.valueOf(student.getBirthDate()));
+
+        System.out.println("ESTUDIANTE INSERTADO CON EXITO;");
+        } catch (SQLException ex) {
+            System.out.println("ERROR EN LA SIGUIENTE FUNCIÓN: getStudentSubject()");
+            System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+        }
+    }
+    public static void alterClassroomInSubject(Scanner in, String url, String masterName, String masterPassword){
+        try (Connection connection = DriverManager.getConnection(url, masterName, masterPassword)){
+            String sql = "UPDATE Asignaturas SET aula = ? WHERE name = ?";
+            PreparedStatement query = connection.prepareStatement(sql);
+            System.out.println("Dime el nuevo número del aula: ");
+            query.setInt(1, in.nextInt());
+            System.out.println("Dime el nombre de la asignatura a la que le vas a cambiar el aula: ");
+            query.setString(2, in.next());
+        } catch (SQLException e) {
+            System.out.println("ERROR EN LA SIGUIENTE FUNCIÓN: alterClassroomInSubject()");
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

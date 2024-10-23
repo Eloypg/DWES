@@ -12,15 +12,11 @@ public class Main {
         String masterUser = "postgres";
         String masterPassword = "12345678";
 
-        List<Student> list = HogwartsService.getStudents(url, masterUser, masterPassword);
-        System.out.println("        - ESTUDIANTES -");
-        list.forEach(System.out::println);
-        List<House> listHouse = HogwartsService.getHouses(url, masterUser, masterPassword);
-        System.out.println("        - CASAS -");
-        listHouse.forEach(System.out::println);
-
-        HogwartsService.showStudentGroupByHouse(listHouse, list);
-
+        List<StudentSubject> relationsList = HogwartsService.getStudentSubject(url, masterUser, masterPassword);
+        List<Student> studentList = HogwartsService.getStudents(url, masterUser, masterPassword);
+        List<House> houseList = HogwartsService.getHouses(url, masterUser, masterPassword);
+        //HogwartsService.studentsAmountByHouse(studentList, houseList);
+        houseList.forEach(System.out::println);
         try (Connection conection = DriverManager.getConnection(url, masterUser, masterPassword)) {
             System.out.println("TE HAS CONECTADO A LA BASE DE DATOS ERES UN FIERA TIO");
         } catch (SQLException ex) {
