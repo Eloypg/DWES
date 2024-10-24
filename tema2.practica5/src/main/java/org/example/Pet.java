@@ -15,4 +15,11 @@ public class Pet {
     private String name;
     private String specie;
     private int id_student;
+
+    @Override
+    public String toString() {
+        return  "ID: " + id +
+                "NAME: " + name +
+                "ESPÉCIE: " + specie;
+    }
 }

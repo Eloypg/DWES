@@ -36,6 +36,13 @@ public class HogwartsService {
         }
         return student;
     }
+    public Subject findSubject(String name, List<Subject> subjectList){
+        Subject subject = new Subject();
+        for (Subject s : subjectList){
+            if (s.getName().equalsIgnoreCase(name)) subject = s;
+        }
+        return subject;
+    }
 
     //FUNCIONES PARA LEER DE LA BBDD
     public  List<Student> getStudents(String url, String masterName, String masterPasswd){
@@ -179,7 +186,6 @@ public class HogwartsService {
         }
         return studentsWithoutPet;
     }
-    //no funcions
     public float averageGrades(Student student, List<StudentSubject> relations) {
         float totalGrade = 0;
         int subjectCounter = 0;
@@ -193,7 +199,7 @@ public class HogwartsService {
             return 0;
         }
         return (totalGrade / subjectCounter);
-    }
+    } // no funciona
     public void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
         for (House h : houseList){
             int counter = 0;
@@ -203,10 +209,18 @@ public class HogwartsService {
             System.out.println("    - " + h.getName().toUpperCase() + ": " + counter);
         }
     }
-    //estudiantes matriculados en una asignatura especifica
-    /*public static List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<Subject> subjectList, List<StudentSubject> relation){
-
-    }*/
+    public List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<StudentSubject> relations){
+        int subjectID = subject.getId();
+        List<Student> enrolledStudents = new ArrayList<>();
+        for (StudentSubject rel : relations){
+            if (rel.getId_subject() == subjectID) {
+                for (Student s : studentList) {
+                    if (s.getId() == rel.getId_student()) enrolledStudents.add(s);
+                }
+            }
+        }
+        return enrolledStudents;
+    }
     public void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "INSERT INTO Estudiante (nombre, apellido, id_casa, año_curso, fecha_nacimiento) VALUES" +
@@ -239,6 +253,19 @@ public class HogwartsService {
             throw new RuntimeException(e);
         }
     }
-
-
+    public void unenrollStudentFromSubject(List<Subject> subjectList, List<Student> studentList, Scanner in, String url, String masterName, String masterPassword){
+        System.out.print("\nNombre del estudiante a desmatricular: ");
+        Student studentToUnroll = findStudent(in.next(),studentList);
+        System.out.print("\nNombre de la asignatura: ");
+        Subject subject = findSubject(in.next(), subjectList);
+        try (Connection connection = DriverManager.getConnection(url, masterName, masterPassword)) {
+            String sql = "DELETE FROM Estudiante_Asignatura WHERE id_estudiante = ? AND id_asignatura = ?";
+            PreparedStatement query = connection.prepareStatement(sql);
+            query.setInt(1, studentToUnroll.getId());
+            query.setInt(2, subject.getId());
+        } catch (SQLException ex) {
+            System.out.println("ERROR EN LA SIGUIENTE FUNCIÓN: unenrollStudentFromSubject()");
+            throw new RuntimeException(ex);
+        }
+    }
 }
