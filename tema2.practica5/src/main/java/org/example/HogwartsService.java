@@ -9,11 +9,35 @@ import java.util.Scanner;
 
 public class HogwartsService {
 
+    //FUNCIONES EXTRA
     public  LocalDate parseStringToLocalDate(String dateString){
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dateString, format);
     }
+    public  Student createStudent(Scanner in, List<Student> studentList){
+        int id = studentList.size();
+        System.out.print("Nombre: ");
+        String name = in.next();
+        System.out.print("Apellido: ");
+        String surname = in.next();
+        System.out.print("ID de la casa: ");
+        int houseID = in.nextInt();
+        System.out.print("Curso (año): ");
+        int year = in.nextInt();
+        System.out.print("Fecha nacimiento (yyyy-MM-dd): ");
+        LocalDate birthDate = parseStringToLocalDate(in.next());
 
+        return new Student(id, name, surname, houseID, year, birthDate);
+    }
+    public  Student findStudent(String name, List<Student> studentList){
+        Student student = new Student();
+        for (Student s : studentList){
+            if (s.getName().equalsIgnoreCase(name)) student = s;
+        }
+        return student;
+    }
+
+    //FUNCIONES PARA LEER DE LA BBDD
     public  List<Student> getStudents(String url, String masterName, String masterPasswd){
         List<Student> studentList = new ArrayList<>();
 
@@ -118,15 +142,8 @@ public class HogwartsService {
         return studentSubject;
     }
 
-    public  Student findStudent(String name, List<Student> studentList){
-        Student student = new Student();
-        for (Student s : studentList){
-            if (s.getName().equalsIgnoreCase(name)) student = s;
-        }
-        return student;
-    }
-
-    public  void showStudentGroupByHouse(List<House> houseList, List<Student> studentList){
+    //FUNCONES PRINCIPALES
+    public void showStudentGroupByHouse(List<House> houseList, List<Student> studentList){
         for (House h : houseList){
             System.out.println("    - " + h.getName() + ": ");
             for (Student s : studentList){
@@ -136,7 +153,7 @@ public class HogwartsService {
             }
         }
     }
-    public  List<Subject> mandatorySubjects(List<Subject> subjects){
+    public List<Subject> mandatorySubjects(List<Subject> subjects){
         List<Subject> mandatorySubjects = new ArrayList<>();
         for (Subject s : subjects) {
             if (s.isMandatory()) mandatorySubjects.add(s);
@@ -144,14 +161,14 @@ public class HogwartsService {
         if (mandatorySubjects.isEmpty()) System.out.println("\nNo hay ninguna asignatura obligatoria, el listado se devolvera vacío.");
         return mandatorySubjects;
     }
-    public  Pet specificStudentPet(Student student, List<Pet> petList){
+    public Pet specificStudentPet(Student student, List<Pet> petList){
         Pet pet = new Pet();
         for (Pet p : petList){
             if (p.getId_student() == student.getId()) pet = p;
         }
         return pet;
     }
-    public  List<Student> studentsWithoutPet(List<Student> studentList, List<Pet> petList){
+    public List<Student> studentsWithoutPet(List<Student> studentList, List<Pet> petList){
         List<Student> studentsWithoutPet = new ArrayList<>();
         for (Student s : studentList){
             int counter = 0;
@@ -162,8 +179,8 @@ public class HogwartsService {
         }
         return studentsWithoutPet;
     }
-    //NO FUNCIONA
-    public  float averageGrades(Student student, List<StudentSubject> relations) {
+    //no funcions
+    public float averageGrades(Student student, List<StudentSubject> relations) {
         float totalGrade = 0;
         int subjectCounter = 0;
         for (StudentSubject r : relations) {
@@ -177,7 +194,7 @@ public class HogwartsService {
         }
         return (totalGrade / subjectCounter);
     }
-    public  void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
+    public void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
         for (House h : houseList){
             int counter = 0;
             for (Student s : studentList){
@@ -190,23 +207,7 @@ public class HogwartsService {
     /*public static List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<Subject> subjectList, List<StudentSubject> relation){
 
     }*/
-
-    public  Student createStudent(Scanner in, List<Student> studentList){
-        int id = studentList.size();
-        System.out.print("Nombre: ");
-        String name = in.next();
-        System.out.print("Apellido: ");
-        String surname = in.next();
-        System.out.print("ID de la casa: ");
-        int houseID = in.nextInt();
-        System.out.print("Curso (año): ");
-        int year = in.nextInt();
-        System.out.print("Fecha nacimiento (yyyy-MM-dd): ");
-        LocalDate birthDate = parseStringToLocalDate(in.next());
-
-        return new Student(id, name, surname, houseID, year, birthDate);
-    }
-    public  void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
+    public void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "INSERT INTO Estudiante (nombre, apellido, id_casa, año_curso, fecha_nacimiento) VALUES" +
                     "(?, ?, ?, ?, ?)";
@@ -225,7 +226,7 @@ public class HogwartsService {
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
         }
     }
-    public  void alterClassroomInSubject(Scanner in, String url, String masterName, String masterPassword){
+    public void alterClassroomInSubject(Scanner in, String url, String masterName, String masterPassword){
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPassword)){
             String sql = "UPDATE Asignaturas SET aula = ? WHERE name = ?";
             PreparedStatement query = connection.prepareStatement(sql);
