@@ -12,9 +12,11 @@ public class Main {
         String masterUser = "postgres";
         String masterPassword = "12345678";
 
-        List<StudentSubject> relationsList = HogwartsService.getStudentSubject(url, masterUser, masterPassword);
-        List<Student> studentList = HogwartsService.getStudents(url, masterUser, masterPassword);
-        List<House> houseList = HogwartsService.getHouses(url, masterUser, masterPassword);
+        HogwartsService hs = new HogwartsService();
+
+        List<StudentSubject> relationsList = hs.getStudentSubject(url, masterUser, masterPassword);
+        List<Student> studentList = hs.getStudents(url, masterUser, masterPassword);
+        List<House> houseList = hs.getHouses(url, masterUser, masterPassword);
         //HogwartsService.studentsAmountByHouse(studentList, houseList);
         houseList.forEach(System.out::println);
         try (Connection conection = DriverManager.getConnection(url, masterUser, masterPassword)) {

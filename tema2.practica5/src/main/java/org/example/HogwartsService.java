@@ -9,12 +9,12 @@ import java.util.Scanner;
 
 public class HogwartsService {
 
-    public static LocalDate parseStringToLocalDate(String dateString){
+    public  LocalDate parseStringToLocalDate(String dateString){
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dateString, format);
     }
 
-    public static List<Student> getStudents(String url, String masterName, String masterPasswd){
+    public  List<Student> getStudents(String url, String masterName, String masterPasswd){
         List<Student> studentList = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
@@ -28,7 +28,6 @@ public class HogwartsService {
                 int id_house = result.getInt("id_casa");
                 int courseYear = result.getInt("año_curso");
                 LocalDate birthDate = parseStringToLocalDate(result.getString("fecha_nacimiento"));
-
                 Student student = new Student(id_student, name, surname, id_house, courseYear, birthDate);
                 studentList.add(student);
             }
@@ -38,7 +37,7 @@ public class HogwartsService {
         }
         return studentList;
     }
-    public static List<House> getHouses(String url, String masterName, String masterPasswd){
+    public  List<House> getHouses(String url, String masterName, String masterPasswd){
         List<House> housesList = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "SELECT id_casa, nombre_casa, fundador, jefe_casa, fantasma FROM Casa";
@@ -59,7 +58,7 @@ public class HogwartsService {
         }
         return housesList;
     }
-    public static List<Pet> getPets(String url, String masterName, String masterPasswd){
+    public  List<Pet> getPets(String url, String masterName, String masterPasswd){
         List<Pet> petsList = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "SELECT id_mascota, nombre_mascota, especie, id_estudiante FROM Mascota";
@@ -79,7 +78,7 @@ public class HogwartsService {
         }
         return petsList;
     }
-    public static List<Subject> getSubjects(String url, String masterName, String masterPasswd){
+    public  List<Subject> getSubjects(String url, String masterName, String masterPasswd){
         List<Subject> subjectList = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "SELECT id_asignatura, nombre_asignatura, aula, obligatoria FROM Asignatura";
@@ -99,7 +98,7 @@ public class HogwartsService {
         }
         return subjectList;
     }
-    public static List<StudentSubject> getStudentSubject(String url, String masterName, String masterPasswd){
+    public List<StudentSubject> getStudentSubject(String url, String masterName, String masterPasswd){
         List<StudentSubject> studentSubject = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "SELECT id_estudiante, id_asignatura, calificacion FROM Estudiante_Asignatura";
@@ -119,7 +118,7 @@ public class HogwartsService {
         return studentSubject;
     }
 
-    public static Student findStudent(String name, List<Student> studentList){
+    public  Student findStudent(String name, List<Student> studentList){
         Student student = new Student();
         for (Student s : studentList){
             if (s.getName().equalsIgnoreCase(name)) student = s;
@@ -127,7 +126,7 @@ public class HogwartsService {
         return student;
     }
 
-    public static void showStudentGroupByHouse(List<House> houseList, List<Student> studentList){
+    public  void showStudentGroupByHouse(List<House> houseList, List<Student> studentList){
         for (House h : houseList){
             System.out.println("    - " + h.getName() + ": ");
             for (Student s : studentList){
@@ -137,7 +136,7 @@ public class HogwartsService {
             }
         }
     }
-    public static List<Subject> mandatorySubjects(List<Subject> subjects){
+    public  List<Subject> mandatorySubjects(List<Subject> subjects){
         List<Subject> mandatorySubjects = new ArrayList<>();
         for (Subject s : subjects) {
             if (s.isMandatory()) mandatorySubjects.add(s);
@@ -145,14 +144,14 @@ public class HogwartsService {
         if (mandatorySubjects.isEmpty()) System.out.println("\nNo hay ninguna asignatura obligatoria, el listado se devolvera vacío.");
         return mandatorySubjects;
     }
-    public static Pet specificStudentPet(Student student, List<Pet> petList){
+    public  Pet specificStudentPet(Student student, List<Pet> petList){
         Pet pet = new Pet();
         for (Pet p : petList){
             if (p.getId_student() == student.getId()) pet = p;
         }
         return pet;
     }
-    public static List<Student> studentsWithoutPet(List<Student> studentList, List<Pet> petList){
+    public  List<Student> studentsWithoutPet(List<Student> studentList, List<Pet> petList){
         List<Student> studentsWithoutPet = new ArrayList<>();
         for (Student s : studentList){
             int counter = 0;
@@ -164,7 +163,7 @@ public class HogwartsService {
         return studentsWithoutPet;
     }
     //NO FUNCIONA
-    public static float averageGrades(Student student, List<StudentSubject> relations) {
+    public  float averageGrades(Student student, List<StudentSubject> relations) {
         float totalGrade = 0;
         int subjectCounter = 0;
         for (StudentSubject r : relations) {
@@ -178,7 +177,7 @@ public class HogwartsService {
         }
         return (totalGrade / subjectCounter);
     }
-    public static void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
+    public  void studentsAmountByHouse(List<Student> studentList, List<House> houseList){
         for (House h : houseList){
             int counter = 0;
             for (Student s : studentList){
@@ -188,11 +187,11 @@ public class HogwartsService {
         }
     }
     //estudiantes matriculados en una asignatura especifica
-    public static List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<Subject> subjectList, List<StudentSubject> relation){
+    /*public static List<Student> enrolledStudentsInSubject(Subject subject, List<Student> studentList, List<Subject> subjectList, List<StudentSubject> relation){
 
-    }
+    }*/
 
-    public static Student createStudent(Scanner in, List<Student> studentList){
+    public  Student createStudent(Scanner in, List<Student> studentList){
         int id = studentList.size();
         System.out.print("Nombre: ");
         String name = in.next();
@@ -207,7 +206,7 @@ public class HogwartsService {
 
         return new Student(id, name, surname, houseID, year, birthDate);
     }
-    public static void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
+    public  void insertNewStudent(Scanner in, List<Student> studentList,String url, String masterName, String masterPasswd){
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPasswd)) {
             String SQLquery = "INSERT INTO Estudiante (nombre, apellido, id_casa, año_curso, fecha_nacimiento) VALUES" +
                     "(?, ?, ?, ?, ?)";
@@ -226,7 +225,7 @@ public class HogwartsService {
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
         }
     }
-    public static void alterClassroomInSubject(Scanner in, String url, String masterName, String masterPassword){
+    public  void alterClassroomInSubject(Scanner in, String url, String masterName, String masterPassword){
         try (Connection connection = DriverManager.getConnection(url, masterName, masterPassword)){
             String sql = "UPDATE Asignaturas SET aula = ? WHERE name = ?";
             PreparedStatement query = connection.prepareStatement(sql);
