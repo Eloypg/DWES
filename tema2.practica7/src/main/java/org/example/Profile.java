@@ -1,6 +1,14 @@
 package org.example;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
+
+@AllArgsConstructor
+@Getter
+@Setter
 
 public class  Profile {
     String name; // nombre del perfil
