@@ -2,15 +2,20 @@ package org.example;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 
+@BsonDiscriminator(key = "_cls", value = "profile")
 public class Post {
     String title; // título del post
     String content; // contenido del post

@@ -14,9 +14,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+import static java.util.Comparator.reverseOrder;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -33,28 +36,21 @@ public class MongoDBManager {
     }
 
     public void createProfile(String name, String status, int age) {
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()); //Coger fecha actual
-        DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"); //Formateador del timeStamp
-        LocalDate creationDate = LocalDateTime.parse(timeStamp, originalFormatter).toLocalDate(); //Convertimos en local date con horas incluidas, y lo cambiamos a LocalDate
-
+        LocalDate creationDate = LocalDate.now();
         List<Post> posts = new ArrayList<>();
 
-        myProfile = new Profile(name, status, age, creationDate, posts);
+        this.myProfile = new Profile(name, status, age, creationDate, posts);
 
         profiles.insertOne(myProfile);
     }
 
     public void publishPost(String title, String content) {
         if (myProfile != null) {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-            LocalDate publishedDate = LocalDateTime.parse(timeStamp, originalFormatter).toLocalDate();
-
+            LocalDate publishedDate = LocalDate.now();
             List<String> comments = new ArrayList<>();
 
             myProfile.getPosts().add(new Post(title, content, publishedDate, 0, comments));
-            profiles.replaceOne(Filters.eq("name", myProfile.getName()), myProfile);
+            profiles.replaceOne(Filters.eq(myProfile.getMyId()), myProfile);
         } else {
             System.out.println("No existe el perfil.");
         }
@@ -63,7 +59,7 @@ public class MongoDBManager {
     public void updateStatus(String status) {
         if (myProfile != null) {
             myProfile.setStatus(status);
-            profiles.replaceOne(Filters.eq("name", myProfile.getName()), myProfile);
+            profiles.replaceOne(Filters.eq(myProfile.getMyId()), myProfile);
         } else {
             System.out.println("No existe el perfil.");
         }
@@ -135,11 +131,55 @@ public class MongoDBManager {
     }
 
     public void showAllStats() {
-        System.out.println("- Num. total perfiles: ");
-        System.out.println("- Num. total de publicaciones: ");
-        System.out.println("- Num. total de likes: ");
-        System.out.println("- Num. total de comentarios: ");
-        System.out.println("- Usiarios mayores de edad: ");
-        System.out.println("- Perfiles con más publicaciones (top 3): ");
+        System.out.println("- Num. total perfiles: " + totalProfiles());
+        System.out.println("- Num. total de publicaciones: " + totalPosts());
+        System.out.println("- Num. total de likes: " + totalLikes());
+        System.out.println("- Num. total de comentarios: " + totalComments());
+        System.out.println("- Usiarios mayores de edad: " + usersOver18());
+        System.out.println("- Perfiles con más publicaciones (top 3): " + top3UsersWithMorePosts());
+    }
+
+    public int totalProfiles(){
+        int totalProfiles = 0;
+        for (Profile p : profiles.find()) totalProfiles++;
+        return totalProfiles;
+    }
+    public int totalPosts(){
+        int totalPosts = 0;
+        for (Profile p : profiles.find()) {
+            for (Post post : p.getPosts()) totalPosts++;
+        }
+        return totalPosts;
+    }
+    public int totalLikes(){
+        int totalLikes = 0;
+        for (Profile p : profiles.find()) {
+            for (Post post : p.getPosts()) totalLikes += post.getLikes();
+        }
+        return totalLikes;
+    }
+    public int totalComments(){
+        int totalComments = 0;
+        for (Profile p : profiles.find()) {
+            for (Post post : p.getPosts()) totalComments += post.getComments().size();
+        }
+        return totalComments;
+    }
+    public int usersOver18(){
+        int adults = 0;
+        for (Profile p : profiles.find()) {
+            adults += p.getAge() >= 18 ? 1 : 0;
+        }
+        return adults;
+    }
+    public List<Profile> top3UsersWithMorePosts(){
+        List<Profile> top3 = new ArrayList<>();
+        for (Profile p : profiles.find()) {
+            top3.add(p);
+        }
+        return top3.stream()
+                .sorted(Comparator.comparingInt(p -> ((Profile) p).getPosts().size()).reversed())
+                .limit(3)
+                .toList();
     }
 }
