@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Casa detallada</title>
+  <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+    <h1 th:text="${house.getName()}"></h1>
+    <ul>
+      <li>Nombre de la casa: <sp th:text="${house.getName()}"></sp></li>
+      <li>Mascota: <sp th:text="${house.getMascot()}"></sp></li>
+      <li>Fundador: <sp th:text="${house.getFounder()}"></sp></li>
+    </ul>
+    <h3>Listado Estudiantes</h3>
+    <ul>
+      <li th:each="student : ${students}">
+        <a href="" th:text="${student.getName()}">Name</a>
+      </li>
+    </ul>
+</body>
+</html>
