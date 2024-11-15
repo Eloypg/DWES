@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiante detallado</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+    <h1 th:text="${student.getName()}"></h1>
+    <ul>
+        <li>Nombre: <sp th:text="${student.getName()}"></sp></li>
+        <li>Casa: <a th:href="@{/house/{name}(name=${student.getHouse().getName()})}" th:text="${student.getHouse().getName()}"></a></li>
+        <li>Patronus: <sp th:text="${student.getPatronus()}"></sp></li>
+    </ul>
+</body>
+</html>

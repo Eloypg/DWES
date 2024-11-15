@@ -15,7 +15,7 @@
     <h3>Listado Estudiantes</h3>
     <ul>
       <li th:each="student : ${students}">
-        <a href="" th:text="${student.getName()}">Name</a>
+        <a th:href="@{/student(name=${student.getName()})}" th:text="${student.getName()}">Name</a>
       </li>
     </ul>
 </body>

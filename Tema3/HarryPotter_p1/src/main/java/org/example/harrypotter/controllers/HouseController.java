@@ -30,7 +30,7 @@ public class HouseController {
     @GetMapping("/house/{name}")
     public String showHouse(@PathVariable String name, Model model){
         model.addAttribute("house", houseService.getHouseByName(name));
-        List<Student> students = studentService.getStudents();
+        List<Student> students = studentService.getStudentsByHouse(name);
         model.addAttribute("students", students);
         return "house";
     }
