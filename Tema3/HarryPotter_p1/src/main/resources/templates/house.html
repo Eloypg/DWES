@@ -13,11 +13,25 @@
       <li>Mascota: <sp th:text="${house.getMascot()}"></sp></li>
       <li>Fundador: <sp th:text="${house.getFounder()}"></sp></li>
     </ul>
-    <h3>Listado Estudiantes</h3>
-    <ul>
-      <li th:each="student : ${students}">
-        <a th:href="@{/student(name=${student.getName()})}" th:text="${student.getName()}">Name</a>
-      </li>
-    </ul>
+    <h3>Tabla Estudiantes</h3>
+    <p>
+        <a th:href="@{/students/create}" th:text="'Añadir Nuevo Estudiante'">añadir_estudiante</a>
+    </p>
+    <table>
+        <tr>
+            <th>Nombre</th>
+        </tr>
+        <tr th:each="student : ${students}">
+            <td>
+                <a th:href="@{/student(name=${student.getName()})}" th:text="${student.getName()}">student_name</a>
+            </td>
+            <td>
+                <a th:href="@{/student/update/{name}(name=${student.getName()})}">Editar estudiante</a>
+            </td>
+            <td>
+                <a th:href="@{/student/delete/{name}(name=${student.getName()})}">Borrar</a>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,5 +26,36 @@ public class StudentController {
     public String ahowStudentDetail(@RequestParam String name, Model model){
         model.addAttribute("student", studentService.getStudentByName(name));
         return "student";
+    }
+
+    //CREAR ESTUDIANTE
+    @GetMapping("/students/create")
+    public String addStudent(Model model){
+        model.addAttribute("student", new Student());
+        return "create-student";
+    }
+    @PostMapping("/student/create")
+    public String addStudent(Student student){
+        studentService.addStudent(student);
+        return "redirect:/students";
+    }
+
+    //BORRAR ESTUDIANTE
+    @GetMapping("/student/delete/{name}")
+    public String deleteStudent(@PathVariable String name){
+        studentService.deleteStudent(name);
+        return "redirect:/students";
+    }
+
+    //ACTUALIZAR ESTUDIANTE
+    @GetMapping("/student/update/{name}")
+    public String updateStudent(@PathVariable String name, Model model){
+        model.addAttribute("student", studentService.getStudentByName(name));
+        return "update-student";
+    }
+    @PostMapping("/student/update/{name}")
+    public String updateStudent(@PathVariable String name, Student student){
+        studentService.updateStudent(name, student);
+        return "redirect:/students";
     }
 }

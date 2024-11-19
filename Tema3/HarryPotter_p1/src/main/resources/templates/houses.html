@@ -7,6 +7,9 @@
 </head>
 <body>
     <h1>Casas</h1>
+    <p>
+        <a th:href="@{/houses/create}" th:text="'Añadir Nueva Casa'">añadir_casa</a>
+    </p>
     <table>
         <tr>
             <th>Nombre</th>
@@ -15,6 +18,12 @@
             <td th:text="${house.getName()}">Nombre</td>
             <td>
                 <a th:href="@{/house/{name}(name=${house.getName()})}">Detalles (url)</a>
+            </td>
+            <td>
+                <a th:href="@{/house/update/{name}(name=${house.getName()})}">Actualizar información</a>
+            </td>
+            <td>
+                <a th:href="@{/house/delete/{name}(name=${house.getName()})}">Borrar casa</a>
             </td>
         </tr>
     </table>
