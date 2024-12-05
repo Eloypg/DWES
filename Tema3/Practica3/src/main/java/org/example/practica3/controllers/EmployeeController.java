@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final TeamService teamService;
@@ -30,7 +30,7 @@ public class EmployeeController {
     public String createForm(Model model){
         model.addAttribute("employee", new Employee());
         model.addAttribute("teams", teamService.findAll());
-        return "employee/form";
+        return "employees/form";
     }
     @PostMapping("/save")
     public String save(@ModelAttribute Employee employee){

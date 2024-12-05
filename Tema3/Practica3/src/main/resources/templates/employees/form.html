@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="pageTitle">Formulario Trabajador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 th:text="${employee.getId() != null ? 'Editar Trabajador' : 'Crear Trabajador'}"></h1>
+    <form th:action="@{/templates/employees/save}" th:object="${employee}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+            <label for="title" class="form-label">Nombre</label>
+            <input type="text" id="title" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="isbn" class="form-label">Edad</label>
+            <input type="number" id="isbn" class="form-control" th:field="*{age}" required>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">Equipo</label>
+            <select id="author" class="form-select" th:field="*{team.id}" required>
+                <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="/employee" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

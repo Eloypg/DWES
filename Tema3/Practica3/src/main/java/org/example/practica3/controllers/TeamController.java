@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/team")
+@RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
     private final EmployeeService employeeService;
@@ -22,7 +22,7 @@ public class TeamController {
     @GetMapping
     public String listAuthors(Model model){
         model.addAttribute("teams", teamService.findAll());
-        return "authors/list";
+        return "teams/list";
     }
 
     @GetMapping("/create")

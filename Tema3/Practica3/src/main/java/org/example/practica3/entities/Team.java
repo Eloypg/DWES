@@ -23,7 +23,7 @@ public class Team {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "team")
     private Set<Employee> employees = new HashSet<>();
 
 

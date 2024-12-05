@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="pageTitle">Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
+<div layout:fragment="content">
+    <h1>Bienvenido a la aplicación de gestión de tareas</h1>
+    <p>Esta es la página de inicio de mi aplicación.</p>
+    <a href="/teams" class="btn btn-primary">Ver Equipos</a>
+    <a href="/employees" class="btn btn-primary">Ver Trabajadores</a>
+    <a href="/tasks" class="btn btn-primary">Ver Tareas</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
