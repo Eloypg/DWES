@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title layout:fragment="pageTitle">Tareas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 th:text="${task.id != null ? 'Editar Tarea' : 'Crear Tarea'}"></h1>
+  <form th:action="@{/tasks/save}" th:object="${task}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" class="form-control" th:field="*{name}" required>
+    </div>
+    <div class="mb-3">
+      <label for="openingDate" class="form-label">Fecha de Apertura</label>
+      <input type="date" id="openingDate" class="form-control" th:field="*{openingDate}" required>
+    </div>
+    <div class="mb-3">
+      <label for="closingDate" class="form-label">Fecha de Finalización</label>
+      <input type="date" id="closingDate" class="form-control" th:field="*{closingDate}" required>
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Tipo</label>
+      <select id="type" class="form-select" th:field="*{type}" required>
+        <option th:value="'Mejora'" th:text="'Mejora'"></option>
+        <option th:value="'Bug'" th:text="'Bug'"></option>
+        <option th:value="'Refactorización'" th:text="'Refactorización'"></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="state" class="form-label">Estado</label>
+      <select id="state" class="form-select" th:field="*{state}" required>
+        <option th:value="'Abierta'" th:text="'Abierta'"></option>
+        <option th:value="'En_Proceso'" th:text="'En Proceso'"></option>
+        <option th:value="'Cerrada'" th:text="'Cerrada'"></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="publisher" class="form-label">Trabajadores</label>
+      <div th:each="employee : ${employees}">
+        <input id="publisher" type="checkbox" th:field="*{employees}" th:value="${employee.id}">
+        <span th:text="${employee.name}"></span>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/tasks" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

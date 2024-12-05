@@ -3,31 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title layout:fragment="pageTitle">Authors List</title>
+  <title layout:fragment="pageTitle">Equipos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
   <h1>Equipos</h1>
   <a href="/" class="btn btn-success">Inicio</a>
-  <a href="/team/create" class="btn btn-success">Crear Nuevo Equipo</a>
+  <a href="/teams/create" class="btn btn-success">Crear Nuevo Equipo</a>
   <table class="table">
     <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
-      <th>Publishers</th>
-      <th>Actions</th>
+      <th>Nombre</th>
+      <th>Trabajadores</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="author : ${authors}">
-      <td th:text="${author.id}"></td>
-      <td th:text="${author.name}"></td>
-      <td th:text="${author.publishers}"></td>
+    <tr th:each="team : ${teams}">
+      <td th:text="${team.id}"></td>
+      <td th:text="${team.name}"></td>
+      <td th:text="${team.employees}"></td>
       <td>
-        <a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-primary">Edit</a>
-        <a th:href="@{/authors/delete/{id}(id=${author.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/teams/edit/{id}(id=${team.id})}" class="btn btn-primary">Editar</a>
+        <a th:href="@{/teams/delete/{id}(id=${team.id})}" class="btn btn-danger">Eliminar</a>
       </td>
     </tr>
     </tbody>

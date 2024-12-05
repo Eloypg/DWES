@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="${employee.getId() != null ? 'Editar Trabajador' : 'Crear Trabajador'}"></h1>
-    <form th:action="@{/templates/employees/save}" th:object="${employee}" method="post">
+    <form th:action="@{/employees/save}" th:object="${employee}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label for="title" class="form-label">Nombre</label>
@@ -22,11 +22,12 @@
         <div class="mb-3">
             <label for="author" class="form-label">Equipo</label>
             <select id="author" class="form-select" th:field="*{team.id}" required>
+                <option value="" disabled selected>Seleccione un equipo (o sin equipo)</option>
                 <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="/employee" class="btn btn-secondary">Cancelar</a>
+        <a href="/employees" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
