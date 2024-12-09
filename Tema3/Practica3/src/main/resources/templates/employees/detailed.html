@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trabajador Detallado</title>
+</head>
+<body>
+<h1>
+    <strong th:text="${employee.getName()}"></strong>
+</h1>
+<section>
+    <strong>ID: </strong> <em th:text="${employee.getId()}"></em>
+</section>
+<section>
+    <strong>Edad: </strong> <p th:text="${employee.getAge()}"></p>
+</section>
+<section>
+    <strong>Equipo al que pertenece: </strong> <p th:text="${employee.getTeam().getName()}"></p>
+</section>
+<section>
+    <strong>Tareas asignadas: </strong>
+    <p th:each="task : ${employee.getTasks()}" th:text="${task.getName()}"></p>
+</section>
+
+</body>
+</html>

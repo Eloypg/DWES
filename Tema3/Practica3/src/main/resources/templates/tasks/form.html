@@ -41,7 +41,7 @@
     </div>
     <div class="mb-3">
       <label for="publisher" class="form-label">Trabajadores</label>
-      <div th:each="employee : ${employees}">
+      <div th:each="employee : ${task.getEmployees()}">
         <input id="publisher" type="checkbox" th:field="*{employees}" th:value="${employee.id}">
         <span th:text="${employee.name}"></span>
       </div>
