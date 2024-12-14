@@ -26,7 +26,10 @@
       <td th:text="${team.employees}"></td>
       <td>
         <a th:href="@{/teams/edit/{id}(id=${team.id})}" class="btn btn-primary">Editar</a>
+        <a th:href="@{/teams/detailed/{id}(id=${team.id})}" class="btn btn-primary">Ver</a>
+        <!--
         <a th:href="@{/teams/delete/{id}(id=${team.id})}" class="btn btn-danger">Eliminar</a>
+        -->
       </td>
     </tr>
     </tbody>

@@ -34,7 +34,10 @@
       <td th:text="${task.employees}"></td>
       <td>
         <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Editar</a>
-        <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+        <a th:href="@{/tasks/detailed/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Ver</a>
+        <!--
+         <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+        -->
       </td>
     </tr>
     </tbody>

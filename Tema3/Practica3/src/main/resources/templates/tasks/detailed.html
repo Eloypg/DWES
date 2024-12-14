@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarea detallada</title>
+</head>
+<body>
+<h1>
+    <strong th:text="${task.getName()}"></strong>
+</h1>
+<section>
+    <strong>ID: </strong> <em th:text="${task.getName()}"></em>
+</section>
+<section>
+    <strong>Nombre: </strong> <p th:text="${task.getName()}"></p>
+</section>
+<section>
+    <strong>Fecha de apertura: </strong> <p th:text="${task.getOpeningDate()}"></p>
+</section>
+<section>
+    <strong>Fecha de cierre: </strong> <p th:text="${task.getClosingDate()}"></p>
+</section>
+<section>
+    <strong>Tipo de tarea: </strong> <p th:text="${task.getType()}"></p>
+</section>
+<section>
+    <strong>Estado: </strong> <p th:text="${task.getState()}"></p>
+</section>
+<section>
+    <strong>Empleados asignados: </strong>
+    <p th:each="employee : ${task.getEmployees()}" th:text="${employee.getName()}"></p>
+</section>
+</body>
+</html>

@@ -47,9 +47,14 @@ public class TeamController {
         model.addAttribute("employees", employeeService.findAll());
         return "teams/form";
     }
-    @GetMapping("/delete/{id}")
+    @GetMapping("/detailed/{id}")
+    public String showDoteiled(@PathVariable Long id, Model model){
+        model.addAttribute("team", teamService.findById(id));
+        return "/teams/detailed";
+    }
+    /*@GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         teamService.deleteById(id);
         return "redirect:/teams";
-    }
+    }*/
 }

@@ -36,9 +36,14 @@ public class TaskController {
         model.addAttribute("task", taskService.findById(id));
         return "tasks/form";
     }
-    @GetMapping("/delete/{id}")
+    @GetMapping("/detailed/{id}")
+    public String showDetailed(@PathVariable Long id, Model model){
+        model.addAttribute("task", taskService.findById(id));
+        return "/tasks/detailed";
+    }
+    /*@GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         taskService.deleteById(id);
         return "redirect:/tasks";
-    }
+    }*/
 }
