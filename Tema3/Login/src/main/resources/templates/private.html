@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Zona privada</title>
+</head>
+<body>
+<h1>Bienvenido a la zona privada</h1>
+<p>Hola <strong th:text="${username}"></strong>. Has iniciado
+  sesión exitosamente.</p>
+<a th:href="@{/logout}">Cerrar Sesión</a>
+</body>
+</html>
