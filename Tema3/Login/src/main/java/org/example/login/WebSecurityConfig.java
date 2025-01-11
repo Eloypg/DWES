@@ -19,6 +19,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**")
                         .permitAll()
+                        .requestMatchers("/admin")
+                        .hasRole("ADMIN")
                         .anyRequest()
                         .authenticated())
                 .formLogin(login -> login
@@ -36,14 +38,18 @@ public class WebSecurityConfig {
     public UserDetailsService userDetailsService(){
         return new InMemoryUserDetailsManager(
                 User.withUsername("user")
-                        .password(passwordEncoder()
-                                .encode("password"))
+                        .password(passwordEncoder().encode("password"))
                                 .roles("USER")
+                                .build()
+                ,User.withUsername("admin")
+                        .password(passwordEncoder().encode("admin"))
+                                .roles("ADMIN")
                                 .build()
 
         );
     }
 
+    //Métod de encriptación de la passwd
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

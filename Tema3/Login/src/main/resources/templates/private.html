@@ -5,8 +5,11 @@
 </head>
 <body>
 <h1>Bienvenido a la zona privada</h1>
-<p>Hola <strong th:text="${username}"></strong>. Has iniciado
+<p>Hola <strong th:text="${username}"></strong> (Tú rol: <em th:text="${userrol}"></em>). Has iniciado
   sesión exitosamente.</p>
+<p th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+  <a th:href="@{/admin}" th:text="'Admin Zone'"></a>
+</p>
 <a th:href="@{/logout}">Cerrar Sesión</a>
 </body>
 </html>

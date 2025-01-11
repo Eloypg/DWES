@@ -18,9 +18,23 @@ public class MainController {
     public String privateZone(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        String userrol = authentication.getAuthorities().toString();
 
         model.addAttribute("username", username);
+        model.addAttribute("userrol", userrol);
         return "private";
+    }
+
+    @GetMapping("/admin")
+    public String adminZone(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        String userrol = authentication.getAuthorities().toString();
+
+        model.addAttribute("username", username);
+        model.addAttribute("userrol", userrol);
+        return "admin";
+
     }
 
 }
