@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado de la Operación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Resultado de la Operación</h2>
+    <p><strong>Operación:</strong> <span th:text="${operation}"></span></p>
+    <p><strong>Resultado:</strong> <span th:text="${result}"></span></p>
+    <a href="/">Volver al inicio</a>
+</div>
+</body>
+</html>
